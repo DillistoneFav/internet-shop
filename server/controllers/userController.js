@@ -1,4 +1,7 @@
+const ApiError = require('../error/ApiError')
+
 class UserController {
+
     async registration(req, res) {
 
     }
@@ -7,8 +10,12 @@ class UserController {
         
     }
 
-    async checkAuth(req, res) {
-        res.json('1231231')
+    async checkAuth(req, res, next) {
+        const {id} = req.query
+        if (!id) {
+            next(ApiError.badRequest('ID not specified'))
+        }
+        res.json(id)
     }
 }
 
