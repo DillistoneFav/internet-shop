@@ -1,0 +1,7 @@
+export const ADMIN_ROUTE = '/internet-shop/admin'
+export const LOGIN_ROUTE = '/internet-shop/login'
+export const REGISTRATION_ROUTE = '/internet-shop/registration'
+export const SHOP_ROUTE = '/internet-shop/'
+export const CART_ROUTE = '/internet-shop/cart'
+export const DEVICE_ROUTE = '/internet-shop/device'
+export const ERROR_ROUTE = '/internet-shop/error'
