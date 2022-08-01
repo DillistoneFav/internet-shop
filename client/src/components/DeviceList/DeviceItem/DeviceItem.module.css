@@ -1,0 +1,26 @@
+.cardEx{
+    width: 200px;
+    cursor: pointer;
+    border: lightblue;
+}
+
+.imgCont{
+    height: 200px;
+    width: 200px;
+}
+
+.botTop{
+    display: flex;
+    justify-content: space-between;
+}
+
+.rating{
+    display: flex;
+    align-items: center;
+}
+
+.deviceName{
+    text-align: left;
+    width: 100%;
+    font-weight: bold;
+}
