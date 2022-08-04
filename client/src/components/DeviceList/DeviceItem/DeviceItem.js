@@ -22,8 +22,10 @@ const DeviceItem = ({device}) => {
                             <StarOutlined />
                         </div>
                     </div>
+                    
                 </div>
                 <div className={classes.deviceName}>{device.name}</div>
+                <div className="d-flex align-items-start">{device.price}₽</div>
             </Card>
         </Col>
     );
