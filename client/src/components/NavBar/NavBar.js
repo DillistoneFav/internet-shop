@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
-import { Context } from "../../App";
+import { Context } from "../../index";
 import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 import { NavLink } from "react-router-dom";
@@ -17,8 +16,10 @@ const NavBar = observer(() => {
   const navigate = useNavigate();
 
   const logout = () => {
-    user._setIsAuth(false);
+    user.setUser({})
+    user.setIsAuth(false);
     navigate(LOGIN_ROUTE);
+    localStorage.removeItem('token');
   };
 
   return (
@@ -30,17 +31,6 @@ const NavBar = observer(() => {
         >
           Experimental Store
         </NavLink>
-        <Nav className="me-auto">
-          <Nav.Link className={classes.links} href="#home">
-            Home
-          </Nav.Link>
-          <Nav.Link className={classes.links} href="#features">
-            Features
-          </Nav.Link>
-          <Nav.Link className={classes.links} href="#pricing">
-            Pricing
-          </Nav.Link>
-        </Nav>
 
         {user._isAuth ? (
           <Dropdown>
@@ -49,19 +39,19 @@ const NavBar = observer(() => {
               variant="success"
               id="dropdown-basic"
             >
-              logged as: {user.email} 123123123123123123
+              Logged as: <span className={classes.loggedName}>{user.user.email}</span>
             </Dropdown.Toggle>
 
-            {user.role === "ADMIN" ? (
+            {user.user.role === "ADMIN" ? (
               <Dropdown.Menu>
                 <Dropdown.Item onClick={() => navigate(ADMIN_ROUTE)}>
                   Admin panel
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => logout}>log out</Dropdown.Item>
+                <Dropdown.Item onClick={logout}>log out</Dropdown.Item>
               </Dropdown.Menu>
             ) : (
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => logout}>log out</Dropdown.Item>
+                <Dropdown.Item onClick={logout}>log out</Dropdown.Item>
               </Dropdown.Menu>
             )}
           </Dropdown>

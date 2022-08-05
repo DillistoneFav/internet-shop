@@ -11,10 +11,6 @@ export const authRoutes = [
         path: ADMIN_ROUTE,
         Component: AdminPanel
     },
-    {
-        path: CART_ROUTE,
-        Component: Cart
-    },
 ]
 
 export const publicRoutes = [
@@ -33,6 +29,10 @@ export const publicRoutes = [
     {
         path: `${DEVICE_ROUTE}/:id`,
         Component: DevicePage,
+    },
+    {
+        path: CART_ROUTE,
+        Component: Cart
     },
     {
         path: ERROR_ROUTE,

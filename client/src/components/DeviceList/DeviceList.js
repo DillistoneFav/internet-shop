@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import React, { useContext } from "react";
-import { Context } from "../../App";
+import { Context } from "../../index";
 import DeviceItem from './DeviceItem/DeviceItem';
 import Row from 'react-bootstrap/esm/Row';
 import classes from './DeviceList.module.css'

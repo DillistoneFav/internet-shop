@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
 import Image from "react-bootstrap/esm/Row";
@@ -7,34 +7,29 @@ import Card from "react-bootstrap/esm/Card";
 import Button from "react-bootstrap/Button";
 import classes from "./DevicePage.module.css";
 import { StarOutlined } from "@ant-design/icons";
+import { useParams } from "react-router-dom";
+import { fetchOneDevice } from "../../http/deviceAPI";
 
 const DevicePage = () => {
-  const device = {
-    id: 1,
-    name: "Iphone 12 pro",
-    price: 50000,
-    rating: 1,
-    img: "mock",
-  };
-  const description = [
-    { id: 1, title: "RAM", description: "8GB" },
-    { id: 2, title: "Cam", description: "12MP" },
-    { id: 3, title: "CPU", description: "SnapDragon" },
-    { id: 4, title: "Core amount", description: "4" },
-    { id: 5, title: "Accum", description: "5000MPH" },
-  ];
+  const {id} = useParams()
+  const [device, setDevice] = useState({description: []});
+
+  useEffect(() => {
+    fetchOneDevice(id).then(data => setDevice(data));
+  }, [])
+
   return (
     <Container className="mt-3">
       <Row>
         <Col md={4}>
-          <Image className={classes.imgCont} src={device.img} />
+          <Image className={classes.imgCont} src={`http://localhost:5000/${device.img}`} />
         </Col>
         <Col md={4}>
           <Row
             className={`${classes.desc} d-flex flex-column align-items-start`}
           >
             <div className={classes.charTop}>Specifications</div>
-            {description.map((item, index) => {
+            {device.description.map((item, index) => {
               return (
                 <div
                   key={item.id}

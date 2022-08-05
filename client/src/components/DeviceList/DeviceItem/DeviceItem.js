@@ -13,7 +13,7 @@ const DeviceItem = ({device}) => {
     return (
         <Col md={3} className="mt-3" onClick={() => navigate(`${DEVICE_ROUTE}/${device.id}`)}>
             <Card className={classes.cardEx} >
-                <Image className={classes.imgCont} src={device.img}/>
+                <Image className={classes.imgCont} src={`http://localhost:5000/${device.img}`}/>
                 <div className={classes.botTop}>
                     <div>Samsung</div>
                     <div>
