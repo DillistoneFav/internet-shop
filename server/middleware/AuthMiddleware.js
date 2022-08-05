@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken')
 
-module.exports = function(req, res, next) {
+module.exports = function (req, res, next) {
     if (req.method === "OPTIONS") {
         next()
     }
     try {
-        const token = req.headers.authorization.split(' ')[1] //check Bearer docs why is that
+        const token = req.headers.authorization.split(' ')[1] // Bearer asfasnfkajsfnjk
         if (!token) {
             return res.status(401).json({message: "User not logged in"})
         }
@@ -15,4 +15,4 @@ module.exports = function(req, res, next) {
     } catch (e) {
         res.status(401).json({message: "User not logged in"})
     }
-}
+};
