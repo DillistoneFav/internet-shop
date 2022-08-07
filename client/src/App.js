@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router } from "react-router-dom";
-import { observer } from "mobx-react";
 import {Spinner} from "react-bootstrap";
 
 import AppRouter from "./components/Router";
@@ -14,11 +13,16 @@ const App = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-      check().then(data => {
-          user.setUser(true)
-          user.setIsAuth(true)
-      }).finally(() => setLoading(false))
-  }, [user.isAuth])
+    if(localStorage.getItem('token')) {
+        setLoading(true);
+        check().then(data => {
+            user.setUser(data);
+            user.setIsAuth(true);
+        }).finally(() => {
+            setLoading(false);
+        })
+    }
+}, [user]);
 
   if (loading) {
       return <Spinner animation={"grow"}/>

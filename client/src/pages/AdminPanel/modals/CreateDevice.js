@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { observer } from "mobx-react";
+
 import { createDevice } from "../../../http/deviceAPI";
 
 const CreateDevice = ({ show, onHide }) => {
@@ -17,7 +17,7 @@ const CreateDevice = ({ show, onHide }) => {
     brand: "",
     name: "",
     price: 0,
-    image: "",
+    image: null,
   });
 
   const changeInfo = (key, value, number) => {
@@ -32,16 +32,20 @@ const CreateDevice = ({ show, onHide }) => {
   };
 
   const addNewDevice = () => {
-    const brandId = device.brands.find(item => item.name === newDevice.brand);
-    const typeId = device.types.find(item => item.name === newDevice.type)
+    const brandId = device.brands.find((item) => item.name === newDevice.brand);
+    const typeId = device.types.find((item) => item.name === newDevice.type);
     const formData = new FormData();
-    formData.append('name', newDevice.name)
-    formData.append('price', `${newDevice.price}`)
-    formData.append('img', newDevice.image)
-    formData.append('brandId', brandId.id)
-    formData.append('typeId', typeId.id)
-    formData.append('info', JSON.stringify(descriptionProps))
-    createDevice(formData).then(data => onHide())
+    formData.append("name", newDevice.name);
+    formData.append("price", `${newDevice.price}`);
+    formData.append("img", newDevice.image);
+    formData.append("brandId", brandId.id);
+    formData.append("typeId", typeId.id);
+    formData.append("info", JSON.stringify(descriptionProps));
+    try {
+      createDevice(formData).then((data) => onHide());
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   const selectFile = (event) => {
@@ -49,6 +53,7 @@ const CreateDevice = ({ show, onHide }) => {
       ...newDevice,
       image: event.target.files[0],
     });
+    console.log(newDevice.image);
   };
 
   const addProperty = () => {
@@ -106,7 +111,7 @@ const CreateDevice = ({ show, onHide }) => {
               setNewDevice({ ...newDevice, price: Number(event.target.value) })
             }
           />
-          <Form.Control type="file" onClick={selectFile} />
+          <Form.Control type="file" onChange={selectFile} />
           <hr />
           <Button variant="outline-dark" onClick={addProperty}>
             Add new property
@@ -147,9 +152,20 @@ const CreateDevice = ({ show, onHide }) => {
         <Button onClick={onHide} variant="outline-danger">
           Close
         </Button>
-        <Button onClick={addNewDevice} variant="outline-primary">
-          Create
-        </Button>
+          <Button
+            onClick={addNewDevice}
+            variant="outline-primary"
+            disabled={
+              !newDevice.name ||
+              !newDevice.price ||
+              !newDevice.image ||
+              !newDevice.brand ||
+              !newDevice.type ||
+              !descriptionProps.length
+            }
+          >
+            Create
+          </Button>
       </Modal.Footer>
     </Modal>
   );
