@@ -27,6 +27,7 @@ const CreateDevice = ({ show, onHide }) => {
       )
     );
   };
+  
   const removeInfo = (number) => {
     setDescriptionProps(descriptionProps.filter((i) => i.number !== number));
   };

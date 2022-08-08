@@ -28,7 +28,7 @@ const CreateBrand = ({ show, onHide }) => {
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={onHide} variant="outline-danger">Close</Button>
-          <Button onClick={addBrand} variant="outline-primary">Create</Button>
+          <Button onClick={addBrand} disabled={!value} variant="outline-primary">Create</Button>
         </Modal.Footer>
       </Modal>
     );
