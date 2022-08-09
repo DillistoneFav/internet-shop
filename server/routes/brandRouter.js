@@ -1,11 +1,11 @@
-const Router = require('express')
-const BrandController = require('../controllers/brandController')
-const checkRole = require('../middleware/checkRoleMiddleware')
+const Router = require('express');
+const router = new Router();
+const brandController = require('../controllers/brandController');
+const checkRole = require('../middleware/checkRoleMiddleware');
 
-const router = new Router()
+router
+    .post('/', checkRole("ADMIN"), brandController.create)
+    .get('/', brandController.getAll)
+    .delete('/:id', checkRole("ADMIN"), brandController.delete);
 
-
-router.post('/', checkRole('ADMIN'), BrandController.create)
-router.get('/', BrandController.getAll)
-
-module.exports = router
+module.exports = router;

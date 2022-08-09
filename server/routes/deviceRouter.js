@@ -1,12 +1,14 @@
-const Router = require('express')
-const DeviceController = require('../controllers/deviceController')
-const checkRole = require('../middleware/checkRoleMiddleware')
+const Router = require('express');
+const router = new Router();
+const deviceController = require('../controllers/deviceController');
+const checkRole = require('../middleware/checkRoleMiddleware');
 
-const router = new Router()
+router
+    .post('/', deviceController.create)
+    .get('/', deviceController.getAll)
+    .get('/search', deviceController.getSearchAllDeviceByName)
+    .get('/:id', deviceController.getOne)
+    .delete('/:id', checkRole("ADMIN"), deviceController.delete)
+    .put('/:id', checkRole("ADMIN"), deviceController.update)
 
-
-router.post('/', checkRole('ADMIN'), DeviceController.create)
-router.get('/', DeviceController.getAll)
-router.get('/:id', DeviceController.getOne)
-
-module.exports = router
+module.exports = router;
