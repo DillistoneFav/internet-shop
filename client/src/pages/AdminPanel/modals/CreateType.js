@@ -4,13 +4,15 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { createType } from "../../../http/deviceAPI";
 
-const CreateType = ({ show, onHide }) => {
+const CreateType = ({ show, onHide, setLoading }) => {
   const [value, setValue] = useState('');
 
-  const addType = () => {
+  const addType = async () => {
+    setLoading(true);
     createType({name: value}).then(data => {
       setValue('')
       onHide();
+      setTimeout(() => setLoading(false), 1000);
     })
   }
 
