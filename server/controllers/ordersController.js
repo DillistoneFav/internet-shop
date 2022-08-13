@@ -97,7 +97,7 @@ class OrdersController {
     async getAll(req, res) {
         let {limit, page, complete} = req.query;
         page = page || 1;
-        limit = limit || 7;
+        limit = limit || 8;
         let offset = page * limit - limit;
         let devices;
         if(complete === "not-completed") {

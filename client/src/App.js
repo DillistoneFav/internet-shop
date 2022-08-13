@@ -7,22 +7,26 @@ import AppRouter from "./components/Router";
 import NavBar from "./components/NavBar/NavBar";
 import { check } from "./http/userApi";
 import {Context} from "./index";
+import {fetchBasket} from "./http/basketApi"
 
 const App = () => {
-  const {user} = useContext(Context)
+  const {user, basket} = useContext(Context)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if(localStorage.getItem('token')) {
         setLoading(true);
-        check().then(data => {
-            user.setUser(data);
+        check().then(userData => {
+            user.setUser(userData);
             user.setIsAuth(true);
+            fetchBasket().then(basketData => {
+              basket.setBasket(basketData)
+            });
         }).finally(() => {
             setLoading(false);
         })
     }
-}, [user]);
+}, [basket, user]);
 
   if (loading) {
       return <Spinner animation={"grow"}/>

@@ -22,13 +22,10 @@ const BrandTab = ({data, setBrandVisible}) => {
     {
       title: "Actions",
       render: (text, record) => (
-        <div className={classes.Actions}>
-          <EditOutlined pointer="true" onClick={() => console.log(record.id)} />
           <DeleteOutlined
             pointer="true"
             onClick={() => console.log(record.id)}
           />
-        </div>
       ),
     },
   ];

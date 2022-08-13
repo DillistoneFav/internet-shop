@@ -24,7 +24,7 @@ const AdminPanel = observer(() => {
     fetchDevices(null, null, null, null).then((data) => {
       device.setDevices(data.rows);
     });
-  }, [device.types, device.brands, device.devices]);
+  }, []);
 
   const [loading, setLoading] = useState(false);
 
@@ -44,6 +44,9 @@ const AdminPanel = observer(() => {
         </TabPane>
         <TabPane tab="Devices" key="3">
           <DeviceTab data={device.devices} types={device.types} brands={device.brands} setDeviceVisible={setDeviceVisible}/>
+        </TabPane>
+        <TabPane tab="Orders" key="4">
+          orders
         </TabPane>
       </Tabs>
 

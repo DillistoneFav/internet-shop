@@ -41,7 +41,7 @@ class DeviceController {
         try {
             let {brandId, typeId, limit, page} = req.query;
             page = page || 1
-            limit = limit || 9
+            limit = limit || 8
             let offset = page * limit - limit
             let devices;
             if (!brandId && !typeId) {
@@ -94,7 +94,7 @@ class DeviceController {
             let {limit, page, name, filter} = req.query;
 
             page = page || 1;
-            limit = limit || 7;
+            limit = limit || 8;
             let offset = page * limit - limit
             if(filter === "All") {
                 const devices =  await Device.findAndCountAll({

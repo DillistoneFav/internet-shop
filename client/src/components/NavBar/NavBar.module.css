@@ -76,3 +76,13 @@
 .loggedName{
     text-decoration: underline;
 }
+
+.cartIcon{
+    color: #fff;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.margin{
+    margin-right: 3rem;
+}
