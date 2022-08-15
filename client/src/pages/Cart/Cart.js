@@ -18,6 +18,13 @@ const Cart = observer(() => {
     const navigate = useNavigate();
     const {basket} = useContext(Context);
 
+    useEffect(() => {
+        const price = JSON.parse(localStorage.getItem('cart')).reduce((accumulator, currentValue) => {
+            return accumulator + currentValue.price;
+        }, 0)
+        basket.setTotalPrice(price)
+    }, [])
+
     if(basket.Basket.length === 0) {
         return (
             <Container className="d-flex flex-column align-items-center mt-5">

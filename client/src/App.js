@@ -31,7 +31,7 @@ const App = () => {
     fetchBasket().then(data => {
       basket.setBasket(data)
     })
-  }, [basket])
+  }, [basket.Basket])
 
   if (loading) {
     return <Spinner animation={"grow"} />;

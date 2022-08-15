@@ -2,8 +2,8 @@ import {$authHost} from "./index";
 
 export const addDeviceToBasket = async (device) => {
     const {data} = await $authHost.post('api/basket', device);
-    const oldBasket = localStorage.getItem('cart');
-    localStorage.setItem('cart', JSON.stringify(...oldBasket, device))
+    const oldBasket = JSON.parse(localStorage.getItem('cart'));
+    localStorage.setItem('cart', JSON.stringify([...oldBasket, device]))
     return data;
 }
 

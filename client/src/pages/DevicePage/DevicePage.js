@@ -11,11 +11,7 @@ import { StarOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { Rate } from "antd";
 import { addDeviceToBasket } from "../../http/basketApi";
-import {
-  addRating,
-  checkRating,
-  fetchOneDevice,
-} from "../../http/deviceAPI";
+import { addRating, checkRating, fetchOneDevice } from "../../http/deviceAPI";
 import { observer } from "mobx-react";
 
 const DevicePage = observer(() => {
@@ -24,39 +20,44 @@ const DevicePage = observer(() => {
   const [resRate, setResRate] = useState("");
   const [isAccessRating, setAccessRating] = useState(false);
   const [starsCount, setStarsCount] = useState(0);
-  const [isDeviceInCart, setIsDeviceInCart] = useState(false)
+  const [isDeviceInCart, setIsDeviceInCart] = useState(false);
   const { id } = useParams();
 
-  useEffect( () => {
-    fetchOneDevice(id).then(data => setDevice(data));
-    if(user.isAuth) {
-        checkRating({deviceId: id}).then(res => setAccessRating(res.allow));
+  useEffect(() => {
+    fetchOneDevice(id).then((data) => setDevice(data));
+    if (user.isAuth) {
+      checkRating({ deviceId: id }).then((res) => setAccessRating(res.allow));
     }
-    checkInCart()
-  },[id, resRate, basket]);
-
+    checkInCart();
+  }, [id, resRate, basket]);
 
   const checkInCart = () => {
-    const isDeviceInCart = basket.Basket.filter(item => item.id === id)
-    console.log(isDeviceInCart)
-  }
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    const isDeviceInCart = cart.findIndex(
+      (item) => Number(item.id) === Number(id)
+    );
+    return isDeviceInCart < 0
+      ? setIsDeviceInCart(false)
+      : setIsDeviceInCart(true);
+  };
 
-const addDeviceInBasket = (device) => {
-    if(user.isAuth) {
-        addDeviceToBasket(device).then(() => basket.addItem(device))
+  const addDeviceInBasket = (device) => {
+    if (user.isAuth) {
+      setIsDeviceInCart(true);
+      addDeviceToBasket(device).then(() => basket.addItem(device));
     } else {
-        alert("Please log in or register first!");
+      alert("Please log in or register first!");
     }
-}
+  };
 
-const ratingChanged = (rate) => {
+  const ratingChanged = (rate) => {
     addRating({
-        rate,
-        deviceId: id
-    }).then(res => {
-        setResRate(res);
+      rate,
+      deviceId: id,
+    }).then((res) => {
+      setResRate(res);
     });
-};
+  };
 
   return (
     <Container className="mt-3">
@@ -107,18 +108,21 @@ const ratingChanged = (rate) => {
                 <StarOutlined />
               </span>
             </div>
-            { !isDeviceInCart ?
+            {!isDeviceInCart ? (
               <Button
-              variant="outline-primary"
-              className={classes.cartButton}
-              onClick={() => {
-                addDeviceInBasket(device)
-              }}
-            >
-              Add to cart!
-            </Button>
-            : <span style={{fontSize: '24px'}}>Device already in your basket!</span>
-            }
+                variant="outline-primary"
+                className={classes.cartButton}
+                onClick={() => {
+                  addDeviceInBasket(device);
+                }}
+              >
+                Add to cart!
+              </Button>
+            ) : (
+              <span style={{ fontSize: "24px" }}>
+                Device already in your basket!
+              </span>
+            )}
           </Card>
           <Card
             className={`${classes.cartCard} d-flex flex-column justify-content-between pt-2 pb-3 mt-3`}

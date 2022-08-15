@@ -10,9 +10,9 @@ export default class BasketStoreStore {
 
   async setDeleteItemBasket(device) {
     await deleteDeviceFromBasket(device.id).then(() => {
-      this._basket = this._basket.filter((item) => item.id !== device.id);
+      this._basket = this._basket.filter(item => item.id !== device.id);
       this._totalPrice -= device.price;
-      localStorage.setItem('cart', this._basket.length ? this._basket : [])
+      localStorage.setItem('cart', this._basket.length ? JSON.stringify(this._basket) : [])
     });
   }
 
@@ -29,7 +29,7 @@ export default class BasketStoreStore {
 
   addItem(item) {
     this._totalPrice += item.price;
-    this._basket = [...this._basket, item]
+    this._basket.push(item)
   }
 
 
