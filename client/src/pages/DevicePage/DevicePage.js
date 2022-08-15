@@ -28,7 +28,9 @@ const DevicePage = observer(() => {
     if (user.isAuth) {
       checkRating({ deviceId: id }).then((res) => setAccessRating(res.allow));
     }
-    checkInCart();
+    if (localStorage.getItem('cart') && localStorage.getItem('cart').length > 0) {
+      checkInCart()
+    };
   }, [id, resRate, basket]);
 
   const checkInCart = () => {
