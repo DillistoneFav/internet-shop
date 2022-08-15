@@ -35,6 +35,7 @@ const DevicePage = observer(() => {
     checkInCart()
   },[id, resRate, basket]);
 
+
   const checkInCart = () => {
     const isDeviceInCart = basket.Basket.filter(item => item.id === id)
     console.log(isDeviceInCart)

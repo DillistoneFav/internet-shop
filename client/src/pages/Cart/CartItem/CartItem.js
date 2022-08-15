@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
 import Card from "react-bootstrap/esm/Card";
 import Image from "react-bootstrap/esm/Image";
 import { Context } from "../../../index";

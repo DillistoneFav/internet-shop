@@ -18,13 +18,6 @@ const Cart = observer(() => {
     const navigate = useNavigate();
     const {basket} = useContext(Context);
 
-    useEffect(() => {
-        const cart = JSON.parse(localStorage.getItem('cart'));
-        basket._totalPrice = (cart.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue.price
-        }, 0))
-    }, [basket])
-
     if(basket.Basket.length === 0) {
         return (
             <Container className="d-flex flex-column align-items-center mt-5">
@@ -37,7 +30,7 @@ const Cart = observer(() => {
     return (
         <Container>
         <Card style={{ width: "100%" }} className="mt-3">
-            <span style={{fontSize: "20px"}} >Your total order price is: {basket._totalPrice}</span>
+            <span style={{fontSize: "20px"}} >Your total order price is: {basket.Price}</span>
         </Card>
             <Row className="mt-3">
                 <Col xs={12}>
