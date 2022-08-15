@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context } from "../../index";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
@@ -9,6 +9,7 @@ import { observer } from "mobx-react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Badge } from "antd";
+import { fetchBasket } from "../../http/basketApi";
 
 import classes from "./NavBar.module.css";
 import {
@@ -25,8 +26,10 @@ const NavBar = observer(() => {
   const logout = () => {
     user.setUser({});
     user.setIsAuth(false);
+    basket.setBasket([]);
     navigate(LOGIN_ROUTE);
     localStorage.removeItem("token");
+    localStorage.removeItem("cart");
   };
 
   return (

@@ -13,10 +13,11 @@ import {
 } from "../../utils/constants";
 import { registration, login } from "../../http/userApi";
 import { observer } from "mobx-react";
+import { fetchBasket } from "../../http/basketApi";
 
 const Auth = observer(() => {
   const navigate = useNavigate();
-  const { user } = useContext(Context);
+  const { user, basket } = useContext(Context);
   const location = useLocation();
   const isLogin = location.pathname === LOGIN_ROUTE;
 
@@ -27,14 +28,17 @@ const Auth = observer(() => {
 
   const authHandler = async () => {
     try {
-      let data;
+      let userData;
+      let basketData;
       if (isLogin) {
-        data = await login(authData.email, authData.password);
+        userData = await login(authData.email, authData.password).then();
       } else {
-        data = await registration(authData.email, authData.password);
+        userData = await registration(authData.email, authData.password);
       }
-    user.setUser(data);
+    user.setUser(userData);
     user.setIsAuth(true);
+    basketData = await fetchBasket();
+    basket.setBasket(basketData)
     navigate(SHOP_ROUTE);
     } catch (error) {
       alert(error.response.data.message);

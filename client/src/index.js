@@ -22,4 +22,3 @@ root.render(
     </Context.Provider>,
   </React.StrictMode>
 );
-

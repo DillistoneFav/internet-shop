@@ -24,6 +24,7 @@ const DevicePage = observer(() => {
   const [resRate, setResRate] = useState("");
   const [isAccessRating, setAccessRating] = useState(false);
   const [starsCount, setStarsCount] = useState(0);
+  const [isDeviceInCart, setIsDeviceInCart] = useState(false)
   const { id } = useParams();
 
   useEffect( () => {
@@ -31,16 +32,17 @@ const DevicePage = observer(() => {
     if(user.isAuth) {
         checkRating({deviceId: id}).then(res => setAccessRating(res.allow));
     }
-  },[id, resRate]);
+    checkInCart()
+  },[id, resRate, basket]);
 
-const isDeviceInBasket = () => {
-    const findDevice = basket.Basket.findIndex(item => Number(item.id) === Number(device.id));
-    return findDevice < 0;
-}
+  const checkInCart = () => {
+    const isDeviceInCart = basket.Basket.filter(item => item.id === id)
+    console.log(isDeviceInCart)
+  }
 
 const addDeviceInBasket = (device) => {
     if(user.isAuth) {
-        addDeviceToBasket(device).then(() => basket.setBasket(device))
+        addDeviceToBasket(device).then(() => basket.addItem(device))
     } else {
         alert("Please log in or register first!");
     }
@@ -104,15 +106,17 @@ const ratingChanged = (rate) => {
                 <StarOutlined />
               </span>
             </div>
-            { isDeviceInBasket ? 
+            { !isDeviceInCart ?
               <Button
               variant="outline-primary"
               className={classes.cartButton}
-              onClick={() => addDeviceInBasket(device)}
+              onClick={() => {
+                addDeviceInBasket(device)
+              }}
             >
               Add to cart!
             </Button>
-            : <span>Device already in your basket!</span>
+            : <span style={{fontSize: '24px'}}>Device already in your basket!</span>
             }
           </Card>
           <Card
