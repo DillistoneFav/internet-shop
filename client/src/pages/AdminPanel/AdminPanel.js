@@ -13,6 +13,7 @@ import { observer } from "mobx-react";
 import TypeTab from "./Tabs/TypeTab";
 import BrandTab from "./Tabs/BrandTab";
 import DeviceTab from "./Tabs/DeviceTab";
+import OrdersTab from "./Tabs/OrdersTab";
 
 const AdminPanel = observer(() => {
   const { device } = useContext(Context);
@@ -24,7 +25,7 @@ const AdminPanel = observer(() => {
     fetchDevices(null, null, null, null).then((data) => {
       device.setDevices(data.rows);
     });
-  }, []);
+  }, [device]);
 
   const [loading, setLoading] = useState(false);
 
@@ -46,7 +47,7 @@ const AdminPanel = observer(() => {
           <DeviceTab data={device.devices} types={device.types} brands={device.brands} setDeviceVisible={setDeviceVisible}/>
         </TabPane>
         <TabPane tab="Orders" key="4">
-          orders
+          <OrdersTab setLoading={setLoading}/>
         </TabPane>
       </Tabs>
 

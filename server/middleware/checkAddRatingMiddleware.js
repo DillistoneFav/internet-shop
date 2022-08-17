@@ -13,10 +13,10 @@ module.exports = async function (req, res, next) {
         if (!checkDevices) {
             return res.json("Product doesn't existing in data base");
         } else if(checkRating && checkDevices) {
-            return res.json("You have left a rating for this product");
+            return res.json("You have already post a rating for this product");
         }
         return next();
     } catch (e) {
-        return res.status(401).json("Something going wrong in checkAddRatingMiddleware.js");
+        return res.status(401).json("Something went wrong!");
     }
 };

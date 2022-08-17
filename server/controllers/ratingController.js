@@ -30,24 +30,6 @@ class RatingController {
             console.error(e);
         }
     }
-
-    async checkRating(req, res) {
-        try {
-            const {deviceId} = req.body;
-            const token = req.headers.authorization.split(' ')[1];
-            const user = jwt.verify(token, process.env.SECRET_KEY);
-            const checkRating = await Rating.findOne({where: {deviceId, userId: user.id}});
-            const checkDevices =  await Device.findOne({where: {id: deviceId}});
-            if (!checkDevices) {
-                return res.json({allow: false});
-            } else if(checkRating && checkDevices) {
-                return res.json({allow: false});
-            }
-            return res.json({allow: true});
-        } catch (e) {
-            return res.status(401).json("Something going wrong in checkAddRatingMiddleware.js");
-        }
-    }
 }
 
 module.exports = new RatingController();

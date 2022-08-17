@@ -7,6 +7,7 @@ import { createContext } from "react";
 import UserStore from "./store/UserStore";
 import DeviceStore from "./store/DeviceStore";
 import BasketStoreStore from './store/BasketStore';
+import OrdersStore from './store/OrdersStore';
 
 export const Context = createContext(null)
 
@@ -17,6 +18,7 @@ root.render(
         user: new UserStore(),
         device: new DeviceStore(),
         basket: new BasketStoreStore(),
+        orders: new OrdersStore(),
     }}>
         <App />
     </Context.Provider>,

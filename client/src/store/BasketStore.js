@@ -16,11 +16,6 @@ export default class BasketStoreStore {
     });
   }
 
-  setDeleteAllDeviceFromBasket() {
-    this._totalPrice = 0;
-    return (this._basket = []);
-  }
-
   resetBasket() {
     this._basket = [];
     this._totalPrice = 0;

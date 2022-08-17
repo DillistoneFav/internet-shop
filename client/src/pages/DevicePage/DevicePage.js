@@ -11,27 +11,25 @@ import { StarOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { Rate } from "antd";
 import { addDeviceToBasket } from "../../http/basketApi";
-import { addRating, checkRating, fetchOneDevice } from "../../http/deviceAPI";
+import { addRating, fetchOneDevice } from "../../http/deviceAPI";
 import { observer } from "mobx-react";
 
 const DevicePage = observer(() => {
   const { user, basket } = useContext(Context);
   const [device, setDevice] = useState({ info: [] });
-  const [resRate, setResRate] = useState("");
-  const [isAccessRating, setAccessRating] = useState(false);
   const [starsCount, setStarsCount] = useState(0);
   const [isDeviceInCart, setIsDeviceInCart] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
     fetchOneDevice(id).then((data) => setDevice(data));
-    if (user.isAuth) {
-      checkRating({ deviceId: id }).then((res) => setAccessRating(res.allow));
+    if (
+      localStorage.getItem("cart") &&
+      localStorage.getItem("cart").length > 0
+    ) {
+      checkInCart();
     }
-    if (localStorage.getItem('cart') && localStorage.getItem('cart').length > 0) {
-      checkInCart()
-    };
-  }, [id, resRate, basket]);
+  }, [id, basket]);
 
   const checkInCart = () => {
     const cart = JSON.parse(localStorage.getItem("cart"));
@@ -52,12 +50,12 @@ const DevicePage = observer(() => {
     }
   };
 
-  const ratingChanged = (rate) => {
+  const postRating = (rate) => {
     addRating({
-      rate,
+      starsCount,
       deviceId: id,
     }).then((res) => {
-      setResRate(res);
+      setStarsCount(res);
     });
   };
 
@@ -122,7 +120,7 @@ const DevicePage = observer(() => {
               </Button>
             ) : (
               <span style={{ fontSize: "24px" }}>
-                Device already in your basket!
+                Device already in your cart!
               </span>
             )}
           </Card>
@@ -137,7 +135,11 @@ const DevicePage = observer(() => {
             <Button
               variant="outline-primary"
               className={classes.cartButton}
-              onClick={() => console.log(starsCount)}
+              onClick={() => {
+                user.isAuth
+                  ? postRating(starsCount)
+                  : alert("please login first!");
+              }}
             >
               Submit!
             </Button>
