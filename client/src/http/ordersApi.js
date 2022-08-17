@@ -1,4 +1,4 @@
-import { $authHost, $host } from "./index";
+import { $authHost} from "./index";
 
 export const sendOrder = async ({mobile, basket }) => {
   const { data } = await $authHost({

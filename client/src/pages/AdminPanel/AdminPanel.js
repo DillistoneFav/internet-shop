@@ -14,9 +14,10 @@ import TypeTab from "./Tabs/TypeTab";
 import BrandTab from "./Tabs/BrandTab";
 import DeviceTab from "./Tabs/DeviceTab";
 import OrdersTab from "./Tabs/OrdersTab";
+import { fetchOrders } from "../../http/ordersApi";
 
 const AdminPanel = observer(() => {
-  const { device } = useContext(Context);
+  const { device, orders } = useContext(Context);
   const { TabPane } = Tabs;
 
   useEffect(() => {
@@ -25,7 +26,10 @@ const AdminPanel = observer(() => {
     fetchDevices(null, null, null, null).then((data) => {
       device.setDevices(data.rows);
     });
-  }, [device]);
+    fetchOrders().then((data) => {
+      orders.setOrders(data.rows)
+    });
+  }, [device, orders]);
 
   const [loading, setLoading] = useState(false);
 
@@ -47,7 +51,7 @@ const AdminPanel = observer(() => {
           <DeviceTab data={device.devices} types={device.types} brands={device.brands} setDeviceVisible={setDeviceVisible}/>
         </TabPane>
         <TabPane tab="Orders" key="4">
-          <OrdersTab setLoading={setLoading}/>
+          <OrdersTab data={orders.orders} setLoading={setLoading}/>
         </TabPane>
       </Tabs>
 

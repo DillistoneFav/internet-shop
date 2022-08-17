@@ -1,27 +1,19 @@
-import React, { useEffect, useContext, useState} from "react";
+import React, { useContext } from "react";
 import { Table, Select } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { fetchChangeStatusOrder } from "../../../http/ordersApi";
 import { Context } from "../../../index";
-import { fetchOrders } from "../../../http/ordersApi";
+
 const { Option } = Select;
 
-const OrdersTab = ({ data, setLoading }) => {
+const OrdersTab = ({ data }) => {
     const { orders } = useContext(Context)
-
-    useEffect(() => {
-        fetchOrders().then((data) => {
-            orders.setOrders(data.rows)
-          });
-    }, [orders])
 
   const handleChange = (status, record) => {
     const changedStatus = status === "Completed" ? true : false
-    setLoading(true);
     fetchChangeStatusOrder({complete: changedStatus, id: record.id}).then(() => {
         const changedOrderIndex = orders.orders.findIndex(item => item.id === record.id)
         orders.orders[changedOrderIndex].complete = changedStatus
-        setTimeout(() => setLoading(false), 1000);
     })
   };
 
