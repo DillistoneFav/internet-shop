@@ -8,7 +8,7 @@ import Col from "react-bootstrap/Col";
 
 import { createDevice } from "../../../http/deviceAPI";
 
-const CreateDevice = ({ show, onHide }) => {
+const CreateDevice = ({ show, onHide, setLoading }) => {
   const { device } = useContext(Context);
   const [descriptionProps, setDescriptionProps] = useState([]);
 
@@ -32,7 +32,8 @@ const CreateDevice = ({ show, onHide }) => {
     setDescriptionProps(descriptionProps.filter((i) => i.number !== number));
   };
 
-  const addNewDevice = () => {
+  const addNewDevice = async () => {
+    setLoading(true);
     const brandId = device.brands.find((item) => item.name === newDevice.brand);
     const typeId = device.types.find((item) => item.name === newDevice.type);
     const formData = new FormData();
@@ -43,7 +44,18 @@ const CreateDevice = ({ show, onHide }) => {
     formData.append("typeId", typeId.id);
     formData.append("info", JSON.stringify(descriptionProps));
     try {
-      createDevice(formData).then((data) => onHide());
+      await createDevice(formData).then((data) => {
+        setNewDevice({
+          type: "",
+          brand: "",
+          name: "",
+          price: 0,
+          image: null,
+        })
+        setDescriptionProps([])
+        onHide()
+        setTimeout(() => setLoading(false), 1000);
+      });
     } catch (error) {
       alert(error.message);
     }
@@ -54,7 +66,6 @@ const CreateDevice = ({ show, onHide }) => {
       ...newDevice,
       image: event.target.files[0],
     });
-    console.log(newDevice.image);
   };
 
   const addProperty = () => {

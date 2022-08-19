@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
-import classes from "../AdminPanel.module.css"
+import classes from "../AdminPanel.module.css";
 import { Table } from "antd";
-import {
-  EditOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import CreateDevice from "../modals/CreateDevice";
+import Loader from "../../../components/Loader/Loader";
 
-const DeviceTab = ({setDeviceVisible, data, types, brands}) => {
+const DeviceTab = ({ data, types, brands }) => {
+
+  const [deviceVisible, setDeviceVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const findName = (id, itemsArray) => {
-    const findedItem = itemsArray.find(item => item.id === id);
+    const findedItem = itemsArray.find((item) => item.id === id);
     return findedItem.name;
-  }
+  };
 
   const deviceColumns = [
     {
@@ -40,16 +42,16 @@ const DeviceTab = ({setDeviceVisible, data, types, brands}) => {
       dataIndex: "typeId",
       key: "id",
       render: (record) => {
-        return findName(record, types)
-      }
+        return findName(record, types);
+      },
     },
     {
       title: "Brand",
       dataIndex: "brandId",
       key: "id",
       render: (record) => {
-        return findName(record, brands)
-      }
+        return findName(record, brands);
+      },
     },
     {
       title: "Actions",
@@ -65,25 +67,32 @@ const DeviceTab = ({setDeviceVisible, data, types, brands}) => {
     },
   ];
 
-    return (
-        <div>
-          <Table
-            columns={deviceColumns}
-            dataSource={data}
-            className="mt-3"
-            size="small"
-          />
-          <Button
-            variant="outline-primary"
-            className={`mt-3 p-2 ${classes.modalButton}`}
-            onClick={() => {
-              setDeviceVisible(true);
-            }}
-          >
-            Add mew Device
-          </Button>
-        </div>
-    );
+  return !loading ? (
+    <div>
+      <Table
+        columns={deviceColumns}
+        dataSource={data}
+        className="mt-3"
+        size="small"
+      />
+      <Button
+        variant="outline-primary"
+        className={`mt-3 p-2 ${classes.modalButton}`}
+        onClick={() => {
+          setDeviceVisible(true);
+        }}
+      >
+        Add mew Device
+      </Button>
+      <CreateDevice
+        show={deviceVisible}
+        onHide={() => setDeviceVisible(false)}
+        setLoading={setLoading}
+      />
+    </div>
+  ) : (
+    <Loader/>
+  );
 };
 
 export default DeviceTab;

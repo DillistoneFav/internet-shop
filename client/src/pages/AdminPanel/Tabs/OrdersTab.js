@@ -6,7 +6,7 @@ import { Context } from "../../../index";
 
 const { Option } = Select;
 
-const OrdersTab = ({ data }) => {
+const OrdersTab = () => {
     const { orders } = useContext(Context)
 
   const handleChange = (status, record) => {

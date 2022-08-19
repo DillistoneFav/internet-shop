@@ -9,7 +9,7 @@ const CreateType = ({ show, onHide, setLoading }) => {
 
   const addType = async () => {
     setLoading(true);
-    createType({name: value}).then(data => {
+    await createType({name: value}).then(data => {
       setValue('')
       onHide();
       setTimeout(() => setLoading(false), 1000);

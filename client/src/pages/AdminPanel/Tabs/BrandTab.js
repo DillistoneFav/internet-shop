@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
-import classes from "../AdminPanel.module.css"
+import classes from "../AdminPanel.module.css";
 import { Table } from "antd";
-import {
-  EditOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
+import CreateBrand from "../modals/CreateBrand";
+import Loader from "../../../components/Loader/Loader";
 
-const BrandTab = ({data, setBrandVisible}) => {
+const BrandTab = ({ data }) => {
+  const [brandVisible, setBrandVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const brandColumns = [
     {
       title: "ID",
@@ -22,31 +24,35 @@ const BrandTab = ({data, setBrandVisible}) => {
     {
       title: "Actions",
       render: (text, record) => (
-          <DeleteOutlined
-            pointer="true"
-            onClick={() => console.log(record.id)}
-          />
+        <DeleteOutlined pointer="true" onClick={() => console.log(record.id)} />
       ),
     },
   ];
 
-    return (
-        <div>
-          <Table
-            columns={brandColumns}
-            dataSource={data}
-            className="mt-3"
-            size="small"
-          />
-          <Button
-            variant="outline-primary"
-            className={`mt-3 p-2 ${classes.modalButton}`}
-            onClick={() => setBrandVisible(true)}
-          >
-            Add new Brand
-          </Button>
-        </div>
-    );
+  return !loading ? (
+    <div>
+      <Table
+        columns={brandColumns}
+        dataSource={data}
+        className="mt-3"
+        size="small"
+      />
+      <Button
+        variant="outline-primary"
+        className={`mt-3 p-2 ${classes.modalButton}`}
+        onClick={() => setBrandVisible(true)}
+      >
+        Add new Brand
+      </Button>
+      <CreateBrand
+        show={brandVisible}
+        onHide={() => setBrandVisible(false)}
+        setLoading={setLoading}
+      />
+    </div>
+  ) : (
+    <Loader/>
+  );
 };
 
 export default BrandTab;

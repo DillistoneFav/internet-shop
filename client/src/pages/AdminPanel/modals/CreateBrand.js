@@ -4,13 +4,15 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { createBrand } from "../../../http/deviceAPI";
 
-const CreateBrand = ({ show, onHide }) => {
+const CreateBrand = ({ show, onHide, setLoading }) => {
   const [value, setValue] = useState('');
 
-  const addBrand = () => {
-    createBrand({name: value}).then(data => {
+  const addBrand = async () => {
+    setLoading(true);
+    await createBrand({name: value}).then(data => {
       setValue('')
       onHide();
+      setTimeout(() => setLoading(false), 1000);
     })
   }
 

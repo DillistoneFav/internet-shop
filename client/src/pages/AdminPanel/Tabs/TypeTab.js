@@ -1,10 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 import Button from "react-bootstrap/esm/Button";
 import classes from "../AdminPanel.module.css";
 import { Table } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
+import CreateType from "../modals/CreateType";
+import Loader from "../../../components/Loader/Loader";
 
-const TypeTab = ({ data, setTypeVisible }) => {
+const TypeTab = ({ data }) => {
+
+  const [typeVisible, setTypeVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const typeColumns = [
     {
       title: "ID",
@@ -27,7 +33,7 @@ const TypeTab = ({ data, setTypeVisible }) => {
     },
   ];
 
-  return (
+  return !loading ? ( 
     <div>
       <Table
         columns={typeColumns}
@@ -42,7 +48,14 @@ const TypeTab = ({ data, setTypeVisible }) => {
       >
         Add new Type
       </Button>
+      <CreateType
+        show={typeVisible}
+        onHide={() => setTypeVisible(false)}
+        setLoading={setLoading}
+      />
     </div>
+  ) : (
+    <Loader />
   );
 };
 

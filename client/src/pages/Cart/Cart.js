@@ -35,7 +35,6 @@ const Cart = observer(() => {
       const handleOk = async () => {
         phoneNubmer.length === 11 ?
         await sendOrder({mobile: phoneNubmer, basket: basket.Basket}).then(data => {
-            console.log(data);
             basket.Basket.forEach(item => basket.setDeleteItemBasket(item))
             setIsModalVisible(false);
             navigate(SHOP_ROUTE)
