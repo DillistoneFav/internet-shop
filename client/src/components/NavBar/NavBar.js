@@ -21,7 +21,6 @@ const NavBar = observer(() => {
     <Navbar bg="dark" variant="dark" className={classes.navCustom}>
       <Container>
         <Logo navigate={navigate} />
-
         {user._isAuth ? (
           <div className="d-flex align-items-center">
             <CartIcon basket={basket} navigate={navigate} />

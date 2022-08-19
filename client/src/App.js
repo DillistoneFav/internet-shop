@@ -24,6 +24,8 @@ const App = () => {
         .finally(() => {
           setLoading(false);
         });
+    } else {
+      setLoading(false)
     }
   }, [user]);
 

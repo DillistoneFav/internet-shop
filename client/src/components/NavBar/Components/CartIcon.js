@@ -3,8 +3,9 @@ import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Badge } from "antd";
 import classes from "../NavBar.module.css";
 import { CART_ROUTE } from "../../../utils/constants";
+import { observer } from "mobx-react";
 
-const CartIcon = ({ basket, navigate }) => {
+const CartIcon = observer(({ basket, navigate }) => {
   return (
     <div className={classes.margin}>
       <Badge count={basket.Basket.length}>
@@ -15,6 +16,6 @@ const CartIcon = ({ basket, navigate }) => {
       </Badge>
     </div>
   );
-};
+});
 
 export default CartIcon;
