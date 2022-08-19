@@ -10,12 +10,24 @@ import { deleteDevice } from "../../../http/deviceAPI";
 const DeviceTab = ({ data, types, brands }) => {
   const [deviceVisible, setDeviceVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [editingState, setEditingState] = useState({
+    isEditing: false,
+    id: undefined,
+  });
 
   const handleDelete = async (id) => {
     setLoading(true);
     await deleteDevice(id).then((data) => {
       setTimeout(() => setLoading(false), 1000);
     });
+  };
+
+  const handleEdit = (id) => {
+    setEditingState({
+      isEditing: true,
+      id: id,
+    });
+    setDeviceVisible(true);
   };
 
   const findName = (id, itemsArray) => {
@@ -64,7 +76,7 @@ const DeviceTab = ({ data, types, brands }) => {
       title: "Actions",
       render: (text, record) => (
         <div className={classes.Actions}>
-          <EditOutlined pointer="true" onClick={() => console.log(record.id)} />
+          <EditOutlined pointer="true" onClick={() => handleEdit(record.id)} />
           <Popconfirm
             title="Sure want to delete?"
             onConfirm={() => handleDelete(record.id)}
@@ -94,8 +106,16 @@ const DeviceTab = ({ data, types, brands }) => {
         Add mew Device
       </Button>
       <CreateDevice
+        editingState={editingState}
+        setEditingState={setEditingState}
         show={deviceVisible}
-        onHide={() => setDeviceVisible(false)}
+        onHide={() => {
+          setEditingState({
+            isEditing: false,
+            id: undefined,
+          });
+          setDeviceVisible(false);
+        }}
         setLoading={setLoading}
       />
     </div>

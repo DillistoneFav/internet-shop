@@ -27,7 +27,6 @@ const AdminPanel = observer(() => {
     });
   }, [device.brands, device.types, device.devices, orders.orders]);
 
-
   return (
     <Container className="d-flex flex-column">
       <Tabs type="card" size="large" className="mt-3">
@@ -39,6 +38,7 @@ const AdminPanel = observer(() => {
         </TabPane>
         <TabPane tab="Devices" key="3">
           <DeviceTab
+            device={device}
             data={device.devices}
             types={device.types}
             brands={device.brands}
@@ -49,7 +49,7 @@ const AdminPanel = observer(() => {
         </TabPane>
       </Tabs>
     </Container>
-  )
+  );
 });
 
 export default AdminPanel;
