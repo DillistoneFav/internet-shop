@@ -47,7 +47,7 @@ export const fetchOneDevice = async (id) => {
     return data;
 }
 
-export const fetchDeleteDevice = async (id) => {
+export const deleteDevice = async (id) => {
     const {data} = await $authHost({method:'DELETE', url:`api/device/${id}`});
     return data;
 }
@@ -56,7 +56,6 @@ export const updateDevices = async (id, body) => {
     const {data} = await $authHost({method:'PUT', url:`api/device/${id}`, data: body});
     return data;
 }
-
 
 
 export const addRating = async (body) => {

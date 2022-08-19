@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import Container from "react-bootstrap/esm/Container";
-import CreateBrand from "./modals/CreateBrand";
-import CreateDevice from "./modals/CreateDevice";
 import { Tabs } from "antd";
 import "antd/dist/antd.css";
 
@@ -27,7 +25,7 @@ const AdminPanel = observer(() => {
     fetchOrders().then((data) => {
       orders.setOrders(data.rows);
     });
-  }, [device.brands, device.types, device.devices, orders]);
+  }, [device.brands, device.types, device.devices, orders.orders]);
 
 
   return (

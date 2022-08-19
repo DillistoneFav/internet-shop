@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import classes from "../AdminPanel.module.css";
-import { Table } from "antd";
+import { Table, Popconfirm } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import CreateDevice from "../modals/CreateDevice";
 import Loader from "../../../components/Loader/Loader";
+import { deleteDevice } from "../../../http/deviceAPI";
 
 const DeviceTab = ({ data, types, brands }) => {
-
   const [deviceVisible, setDeviceVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const handleDelete = async (id) => {
+    setLoading(true);
+    await deleteDevice(id).then((data) => {
+      setTimeout(() => setLoading(false), 1000);
+    });
+  };
 
   const findName = (id, itemsArray) => {
     const findedItem = itemsArray.find((item) => item.id === id);
@@ -58,10 +65,12 @@ const DeviceTab = ({ data, types, brands }) => {
       render: (text, record) => (
         <div className={classes.Actions}>
           <EditOutlined pointer="true" onClick={() => console.log(record.id)} />
-          <DeleteOutlined
-            pointer="true"
-            onClick={() => console.log(record.id)}
-          />
+          <Popconfirm
+            title="Sure want to delete?"
+            onConfirm={() => handleDelete(record.id)}
+          >
+            <DeleteOutlined pointer="true" />
+          </Popconfirm>
         </div>
       ),
     },
@@ -91,7 +100,7 @@ const DeviceTab = ({ data, types, brands }) => {
       />
     </div>
   ) : (
-    <Loader/>
+    <Loader />
   );
 };
 

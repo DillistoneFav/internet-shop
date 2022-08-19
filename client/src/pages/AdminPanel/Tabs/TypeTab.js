@@ -1,15 +1,23 @@
 import React, {useState} from "react";
 import Button from "react-bootstrap/esm/Button";
 import classes from "../AdminPanel.module.css";
-import { Table } from "antd";
+import { Table, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import CreateType from "../modals/CreateType";
 import Loader from "../../../components/Loader/Loader";
+import { deleteType } from "../../../http/deviceAPI";
 
 const TypeTab = ({ data }) => {
 
   const [typeVisible, setTypeVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const handleDelete = async (id) => {
+    setLoading(true)
+    await deleteType(id).then((data) => {
+      setTimeout(() => setLoading(false), 1000);
+    })
+  }
 
   const typeColumns = [
     {
@@ -25,10 +33,11 @@ const TypeTab = ({ data }) => {
     {
       title: "Actions",
       render: (text, record) => (
-          <DeleteOutlined
+        <Popconfirm title="Sure want to delete?" onConfirm={() => handleDelete(record.id)}>
+            <DeleteOutlined
             pointer="true"
-            onClick={() => console.log(record.id)}
           />
+        </Popconfirm>
       ),
     },
   ];

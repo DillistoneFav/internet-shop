@@ -1,14 +1,22 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import classes from "../AdminPanel.module.css";
-import { Table } from "antd";
+import { Table, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import CreateBrand from "../modals/CreateBrand";
 import Loader from "../../../components/Loader/Loader";
+import { deleteBrand } from "../../../http/deviceAPI";
 
 const BrandTab = ({ data }) => {
   const [brandVisible, setBrandVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const handleDelete = async (id) => {
+    setLoading(true);
+    await deleteBrand(id).then((data) => {
+      setTimeout(() => setLoading(false), 1000);
+    });
+  };
 
   const brandColumns = [
     {
@@ -24,7 +32,12 @@ const BrandTab = ({ data }) => {
     {
       title: "Actions",
       render: (text, record) => (
-        <DeleteOutlined pointer="true" onClick={() => console.log(record.id)} />
+        <Popconfirm
+          title="Sure want to delete?"
+          onConfirm={() => handleDelete(record.id)}
+        >
+          <DeleteOutlined pointer="true" />
+        </Popconfirm>
       ),
     },
   ];
@@ -51,7 +64,7 @@ const BrandTab = ({ data }) => {
       />
     </div>
   ) : (
-    <Loader/>
+    <Loader />
   );
 };
 

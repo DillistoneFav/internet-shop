@@ -1,27 +1,40 @@
-import React, { useContext } from "react";
-import { Table, Select } from "antd";
+import React, { useContext, useState } from "react";
+import { Table, Select, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-import { fetchChangeStatusOrder } from "../../../http/ordersApi";
+import { deleteOrder, fetchChangeStatusOrder } from "../../../http/ordersApi";
 import { Context } from "../../../index";
+import Loader from "../../../components/Loader/Loader";
 
 const { Option } = Select;
 
 const OrdersTab = () => {
-    const { orders } = useContext(Context)
+  const { orders } = useContext(Context);
+  const [loading, setLoading] = useState(false);
+
+  const handleDelete = async (orderId) => {
+    setLoading(true);
+    await deleteOrder({ id: orderId }).then((data) => {
+      setTimeout(() => setLoading(false), 1000);
+    });
+  };
 
   const handleChange = (status, record) => {
-    const changedStatus = status === "Completed" ? true : false
-    fetchChangeStatusOrder({complete: changedStatus, id: record.id}).then(() => {
-        const changedOrderIndex = orders.orders.findIndex(item => item.id === record.id)
-        orders.orders[changedOrderIndex].complete = changedStatus
-    })
+    const changedStatus = status === "Completed" ? true : false;
+    fetchChangeStatusOrder({ complete: changedStatus, id: record.id }).then(
+      () => {
+        const changedOrderIndex = orders.orders.findIndex(
+          (item) => item.id === record.id
+        );
+        orders.orders[changedOrderIndex].complete = changedStatus;
+      }
+    );
   };
 
   const typeColumns = [
     {
       title: "ID",
       dataIndex: "id",
-      key: "id"
+      key: "id",
     },
     {
       title: "Status",
@@ -51,12 +64,17 @@ const OrdersTab = () => {
     {
       title: "Actions",
       render: (text, record) => (
-        <DeleteOutlined pointer="true" onClick={() => console.log(record.id)} />
+        <Popconfirm
+          title="Sure want to delete?"
+          onConfirm={() => handleDelete(record.id)}
+        >
+          <DeleteOutlined pointer="true" />
+        </Popconfirm>
       ),
     },
   ];
 
-  return (
+  return !loading ? (
     <div>
       <Table
         columns={typeColumns}
@@ -65,6 +83,8 @@ const OrdersTab = () => {
         size="small"
       />
     </div>
+  ) : (
+    <Loader />
   );
 };
 
