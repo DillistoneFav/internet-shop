@@ -3,6 +3,7 @@
     text-decoration: none;
     margin-right: 20px;
     font-size: 20px;
+    cursor: pointer;
 }
 
 .logoLink:visited{
