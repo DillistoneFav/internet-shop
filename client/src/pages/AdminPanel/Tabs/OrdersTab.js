@@ -1,15 +1,22 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Table, Select, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { deleteOrder, fetchChangeStatusOrder } from "../../../http/ordersApi";
 import { Context } from "../../../index";
 import Loader from "../../../components/Loader/Loader";
+import { fetchOrders } from "../../../http/ordersApi";
 
 const { Option } = Select;
 
 const OrdersTab = () => {
   const { orders } = useContext(Context);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchOrders().then((data) => {
+      orders.setOrders(data.rows);
+    });
+  }, [loading]);
 
   const handleDelete = async (orderId) => {
     setLoading(true);

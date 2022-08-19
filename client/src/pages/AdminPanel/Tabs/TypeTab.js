@@ -1,16 +1,20 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Button from "react-bootstrap/esm/Button";
 import classes from "../AdminPanel.module.css";
 import { Table, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import CreateType from "../modals/CreateType";
 import Loader from "../../../components/Loader/Loader";
-import { deleteType } from "../../../http/deviceAPI";
+import { deleteType, fetchTypes } from "../../../http/deviceAPI";
 
-const TypeTab = ({ data }) => {
+const TypeTab = ({ data, device }) => {
 
   const [typeVisible, setTypeVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchTypes().then((data) => device.setTypes(data));
+  }, [loading]);
 
   const handleDelete = async (id) => {
     setLoading(true)

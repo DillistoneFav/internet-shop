@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/esm/Button";
 import classes from "../AdminPanel.module.css";
 import { Table, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import CreateBrand from "../modals/CreateBrand";
 import Loader from "../../../components/Loader/Loader";
-import { deleteBrand } from "../../../http/deviceAPI";
+import { deleteBrand, fetchBrands } from "../../../http/deviceAPI";
 
-const BrandTab = ({ data }) => {
+const BrandTab = ({ data, device }) => {
   const [brandVisible, setBrandVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchBrands().then((data) => device.setBrands(data));
+  }, [loading]);
 
   const handleDelete = async (id) => {
     setLoading(true);
