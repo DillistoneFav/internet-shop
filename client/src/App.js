@@ -14,24 +14,23 @@ const App = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("token") && user.isAuth) {
       setLoading(true);
-      check()
-        .then((userData) => {
-          user.setUser(userData);
-          user.setIsAuth(true);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      check().then((userData) => {
+        user.setUser(userData);
+        user.setIsAuth(true);
+      });
     }
+    setLoading(false);
   }, [user]);
 
   useEffect(() => {
-    fetchBasket().then(data => {
-      basket.setBasket(data)
-    })
-  }, [basket])
+    if (user.isAuth) {
+      fetchBasket().then((data) => {
+        basket.setBasket(data);
+      });
+    }
+  }, [basket]);
 
   if (loading) {
     return <Spinner animation={"grow"} />;
