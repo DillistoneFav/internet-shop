@@ -1,5 +1,4 @@
 # internet-shop
----------------------------------------------------------------------
 React + MobX
 UI kit: React-bootstrap, ANT Design
 REST API
